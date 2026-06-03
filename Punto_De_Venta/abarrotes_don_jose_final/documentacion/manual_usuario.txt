@@ -1,0 +1,55 @@
+MANUAL DE USUARIO - ABARROTES DON JOSÉ
+
+1. Iniciar sesión
+Administrador:
+usuario: admin
+contraseña: admin123
+
+Cajero:
+usuario: cajero
+contraseña: 12345
+
+2. Nueva venta
+- Entra a Nueva venta.
+- Busca un producto por nombre o código de barras.
+- También puedes presionar “Escanear celular”.
+- Agrega productos al ticket.
+- Selecciona cliente frecuente si aplica.
+- Escribe el pago del cliente.
+- El sistema calcula el cambio.
+- Finaliza la venta.
+- Se genera ticket imprimible.
+
+3. Escaneo con celular
+Para usar la cámara:
+- El proyecto debe ejecutarse en localhost o en un sitio con HTTPS.
+- En celular se recomienda subirlo a hosting o abrirlo desde una red local segura.
+- Se usa la librería ZXing desde CDN.
+
+4. Productos
+Permite registrar:
+- Código de barras
+- Nombre
+- Categoría
+- Proveedor
+- Precio
+- Stock
+- Stock mínimo
+
+5. Compras
+Registra compras a proveedores.
+Al guardar una compra se aumenta automáticamente el stock.
+
+6. Clientes
+Permite registrar clientes frecuentes y consultar cuánto han comprado.
+
+7. Reportes
+Incluye:
+- Productos más vendidos
+- Inventario bajo
+- Historial de ventas
+- Exportar ventas a CSV compatible con Excel
+- Guardar reporte como PDF usando imprimir
+
+8. Movimientos
+Muestra entradas y salidas de inventario.

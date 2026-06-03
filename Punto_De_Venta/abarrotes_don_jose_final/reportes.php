@@ -1,0 +1,12 @@
+<?php
+include "auth.php"; include "config/conexion.php";
+$ventas=$conn->query("SELECT v.*,u.nombre AS cajero,c.nombre AS cliente FROM ventas v INNER JOIN usuarios u ON v.id_usuario=u.id_usuario LEFT JOIN clientes c ON v.id_cliente=c.id_cliente ORDER BY v.fecha DESC");
+$mas=$conn->query("SELECT p.nombre,SUM(d.cantidad) AS cantidad,SUM(d.subtotal) AS total FROM detalle_venta d INNER JOIN productos p ON d.id_producto=p.id_producto GROUP BY p.id_producto ORDER BY cantidad DESC LIMIT 10");
+$bajo=$conn->query("SELECT * FROM productos WHERE stock<=stock_minimo ORDER BY stock ASC");
+?>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reportes</title><link rel="stylesheet" href="assets/css/estilos.css"></head><body><?php include "menu.php"; ?><main class="main">
+<header class="topbar"><div><h1>Reportes</h1><p>Ventas, inventario bajo y productos más vendidos</p></div><div><button onclick="window.print()">Guardar PDF</button> <a class="btn-secundario" href="exportar_ventas.php">Exportar Excel CSV</a></div></header>
+<section class="panel"><h2>Productos más vendidos</h2><table><thead><tr><th>Producto</th><th>Cantidad</th><th>Total vendido</th></tr></thead><tbody><?php while($m=$mas->fetch_assoc()){ ?><tr><td><?php echo $m["nombre"]; ?></td><td><?php echo $m["cantidad"]; ?></td><td>$<?php echo number_format($m["total"],2); ?></td></tr><?php } ?></tbody></table></section>
+<section class="panel"><h2>Inventario bajo</h2><table><thead><tr><th>Producto</th><th>Stock</th><th>Mínimo</th></tr></thead><tbody><?php while($b=$bajo->fetch_assoc()){ ?><tr><td><?php echo $b["nombre"]; ?></td><td><span class="badge-rojo"><?php echo $b["stock"]; ?></span></td><td><?php echo $b["stock_minimo"]; ?></td></tr><?php } ?></tbody></table></section>
+<section class="panel"><h2>Historial de ventas</h2><table><thead><tr><th>Ticket</th><th>Fecha</th><th>Total</th><th>Pago</th><th>Cambio</th><th>Cajero</th><th>Cliente</th><th></th></tr></thead><tbody><?php while($v=$ventas->fetch_assoc()){ ?><tr><td>#<?php echo $v["id_venta"]; ?></td><td><?php echo $v["fecha"]; ?></td><td>$<?php echo number_format($v["total"],2); ?></td><td>$<?php echo number_format($v["pago"],2); ?></td><td>$<?php echo number_format($v["cambio"],2); ?></td><td><?php echo $v["cajero"]; ?></td><td><?php echo $v["cliente"] ?? "Público general"; ?></td><td><a class="btn-editar" href="ticket.php?id=<?php echo $v["id_venta"]; ?>">Ticket</a></td></tr><?php } ?></tbody></table></section>
+</main></body></html>
